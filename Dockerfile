@@ -42,18 +42,16 @@ RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/re
     && rm -rf glibc*apk /var/cache/apk/*
 
 # Configure Miniconda
-ENV MINICONDA_VER 4.2.12
+ENV MINICONDA_VER latest
 ENV MINICONDA Miniconda3-$MINICONDA_VER-Linux-x86_64.sh
 ENV MINICONDA_URL https://repo.continuum.io/miniconda/$MINICONDA
-ENV MINICONDA_MD5_SUM d0c7c71cc5659e54ab51f2005a8d96f3
 
 # Create nbuser user with UID=1000 and in the 'users' group
 RUN mkdir -p /opt/conda && \
     curl -L $MINICONDA_URL  -o miniconda.sh && \
-    echo "$MINICONDA_MD5_SUM  miniconda.sh" | md5sum -c - && \
     /bin/bash miniconda.sh -f -b -p /opt/conda && \
     rm miniconda.sh && \
-    /opt/conda/bin/conda install --yes conda==$MINICONDA_VER && \
+    /opt/conda/bin/conda install --yes conda && \
     ln -s /opt/conda/bin/conda /usr/bin/conda && \
     conda clean --yes --all && \
     rm -rf /var/cache/apk/*
